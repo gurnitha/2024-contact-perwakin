@@ -1,0 +1,76 @@
+# 2024-contact-perwakin
+Membuat contact manager
+
+
+#### 1. Create new project and app
+
+E:\_WORKSPACE\laragon\www
+λ cd E:\_WORKSPACE\2024\django\contact-perwakin
+
+E:\_WORKSPACE\2024\django\contact-perwakin
+λ git clone git@github.com:gurnitha/2024-contact-perwakin.git
+Cloning into '2024-contact-perwakin'...
+Enter passphrase for key '/c/Users/ING/.ssh/id_rsa':
+remote: Enumerating objects: 4, done.
+remote: Counting objects: 100% (4/4), done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (4/4), done.
+
+E:\_WORKSPACE\2024\django\contact-perwakin
+λ ls
+2024-contact-perwakin/
+
+E:\_WORKSPACE\2024\django\contact-perwakin
+λ cd 2024-contact-perwakin\
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+λ python -V
+Python 3.10.6
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+λ python -m venv venv31042
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+λ venv31042\Scripts\activate.bat
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ pip install django==4.2
+Collecting django==4.2
+  Using cached Django-4.2-py3-none-any.whl (8.0 MB)
+Collecting tzdata
+  Downloading tzdata-2023.4-py2.py3-none-any.whl (346 kB)
+     ---------------------------------------- 346.6/346.6 kB 3.6 MB/s eta 0:00:00
+Collecting asgiref<4,>=3.6.0
+  Using cached asgiref-3.7.2-py3-none-any.whl (24 kB)
+Collecting sqlparse>=0.3.1
+  Using cached sqlparse-0.4.4-py3-none-any.whl (41 kB)
+Collecting typing-extensions>=4
+  Downloading typing_extensions-4.9.0-py3-none-any.whl (32 kB)
+Installing collected packages: tzdata, typing-extensions, sqlparse, asgiref, django
+Successfully installed asgiref-3.7.2 django-4.2 sqlparse-0.4.4 typing-extensions-4.9.0 tzdata-2023.4
+
+[notice] A new release of pip available: 22.2.1 -> 23.3.2
+[notice] To update, run: python.exe -m pip install --upgrade pip
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ django-admin startproject config .
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ django-admin startapp contact
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py runserver
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+You have 18 unapplied migration(s). Your project may not work properly until you apply the migrations for app(s): admin, auth, contenttypes, sessions.
+Run 'python manage.py migrate' to apply them.
+January 05, 2024 - 10:40:33
+Django version 4.2, using settings 'config.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+=======DONE=======
+
