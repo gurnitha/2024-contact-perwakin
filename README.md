@@ -37,3 +37,18 @@ Membuat contact manager
         modified:   contact/admin.py
         new file:   contact/migrations/0003_alter_country_options_city.py
         modified:   contact/models.py
+
+#### 4. Created more models and added relationships 
+
+        modified:   contact/admin.py
+        new file:   contact/migrations/0004_category.py
+        new file:   contact/migrations/0005_perwakin.py
+        new file:   contact/migrations/0006_bidang_group.py
+        new file:   contact/migrations/0007_gender_hobby_isimportant_profession_contact.py
+        new file:   contact/migrations/0008_alter_contact_options_remove_contact_hobby_and_more.py
+        new file:   contact/migrations/0009_remove_contact_profession_contact_profession.py
+        new file:   contact/migrations/0010_interest_contact_interest.py
+        new file:   contact/migrations/0011_salutation_contact_salutation.py
+        new file:   contact/migrations/0012_remove_contact_group_contact_group.py
+        modified:   contact/models.py
+        modified:   note.txt

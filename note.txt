@@ -74,3 +74,235 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CTRL-BREAK.
 =======DONE=======
 
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0001
+BEGIN;
+--
+-- Create model Region
+--
+CREATE TABLE "contact_region" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL);
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0002
+BEGIN;
+--
+-- Create model Country
+--
+CREATE TABLE "contact_country" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL, "region_id" bigint NOT NULL REFERENCES "contact_region" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE INDEX "contact_country_region_id_5f22b34f" ON "contact_country" ("region_id");
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0003
+BEGIN;
+--
+-- Change Meta options on country
+--
+-- (no-op)
+--
+-- Create model City
+--
+CREATE TABLE "contact_city" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL, "country_id" bigint NOT NULL REFERENCES "contact_country" ("id") DEFERRABLE INITIALLY DEFERRED, "region_id" bigint NOT NULL REFERENCES "contact_region" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE INDEX "contact_city_country_id_d60ae1d1" ON "contact_city" ("country_id");
+CREATE INDEX "contact_city_region_id_c9d614a9" ON "contact_city" ("region_id");
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0004
+BEGIN;
+--
+-- Create model Category
+--
+CREATE TABLE "contact_category" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL);
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0005
+BEGIN;
+--
+-- Create model Perwakin
+--
+CREATE TABLE "contact_perwakin" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL, "category_id" bigint NOT NULL REFERENCES "contact_category" ("id") DEFERRABLE INITIALLY DEFERRED, "city_id" bigint NOT NULL REFERENCES "contact_city" ("id") DEFERRABLE INITIALLY DEFERRED, "country_id" bigint NOT NULL REFERENCES "contact_country" ("id") DEFERRABLE INITIALLY DEFERRED, "region_id" bigint NOT NULL REFERENCES "contact_region" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE INDEX "contact_perwakin_category_id_0b2c9c1c" ON "contact_perwakin" ("category_id");
+CREATE INDEX "contact_perwakin_city_id_547a6fbb" ON "contact_perwakin" ("city_id");
+CREATE INDEX "contact_perwakin_country_id_746fb68a" ON "contact_perwakin" ("country_id");
+CREATE INDEX "contact_perwakin_region_id_b1805ed4" ON "contact_perwakin" ("region_id");
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0006
+BEGIN;
+--
+-- Create model Bidang
+--
+CREATE TABLE "contact_bidang" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL, "perwakin_id" bigint NOT NULL REFERENCES "contact_perwakin" ("id") DEFERRABLE INITIALLY DEFERRED);
+--
+-- Create model Group
+--
+CREATE TABLE "contact_group" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL, "bidang_id" bigint NOT NULL REFERENCES "contact_bidang" ("id") DEFERRABLE INITIALLY DEFERRED, "perwakin_id" bigint NOT NULL REFERENCES "contact_perwakin" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE INDEX "contact_bidang_perwakin_id_94e34a9f" ON "contact_bidang" ("perwakin_id");
+CREATE INDEX "contact_group_bidang_id_ce0bde96" ON "contact_group" ("bidang_id");
+CREATE INDEX "contact_group_perwakin_id_05e55741" ON "contact_group" ("perwakin_id");
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0007
+BEGIN;
+--
+-- Create model Gender
+--
+CREATE TABLE "contact_gender" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL);
+--
+-- Create model Hobby
+--
+CREATE TABLE "contact_hobby" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL);
+--
+-- Create model IsImportant
+--
+CREATE TABLE "contact_isimportant" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL);
+--
+-- Create model Profession
+--
+CREATE TABLE "contact_profession" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL);
+--
+-- Create model Contact
+--
+CREATE TABLE "contact_contact" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL, "bidang_id" bigint NOT NULL REFERENCES "contact_bidang" ("id") DEFERRABLE INITIALLY DEFERRED, "country_id" bigint NOT NULL REFERENCES "contact_country" ("id") DEFERRABLE INITIALLY DEFERRED, "gender_id" bigint NOT NULL REFERENCES "contact_gender" ("id") DEFERRABLE INITIALLY DEFERRED, "group_id" bigint NOT NULL REFERENCES "contact_group" ("id") DEFERRABLE INITIALLY DEFERRED, "hobby_id" bigint NOT NULL REFERENCES "contact_hobby" ("id") DEFERRABLE INITIALLY DEFERRED, "is_important_id" bigint NOT NULL REFERENCES "contact_isimportant" ("id") DEFERRABLE INITIALLY DEFERRED, "perwakin_id" bigint NOT NULL REFERENCES "contact_perwakin" ("id") DEFERRABLE INITIALLY DEFERRED, "profession_id" bigint NOT NULL REFERENCES "contact_profession" ("id") DEFERRABLE INITIALLY DEFERRED, "region_id" bigint NOT NULL REFERENCES "contact_region" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE INDEX "contact_contact_bidang_id_d680a221" ON "contact_contact" ("bidang_id");
+CREATE INDEX "contact_contact_country_id_8c4af7e6" ON "contact_contact" ("country_id");
+CREATE INDEX "contact_contact_gender_id_878b72bf" ON "contact_contact" ("gender_id");
+CREATE INDEX "contact_contact_group_id_ac91452d" ON "contact_contact" ("group_id");
+CREATE INDEX "contact_contact_hobby_id_4321c214" ON "contact_contact" ("hobby_id");
+CREATE INDEX "contact_contact_is_important_id_4f0885f7" ON "contact_contact" ("is_important_id");
+CREATE INDEX "contact_contact_perwakin_id_16332b0d" ON "contact_contact" ("perwakin_id");
+CREATE INDEX "contact_contact_profession_id_0cd93d60" ON "contact_contact" ("profession_id");
+CREATE INDEX "contact_contact_region_id_c4c62694" ON "contact_contact" ("region_id");
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0008
+BEGIN;
+--
+-- Change Meta options on contact
+--
+-- (no-op)
+--
+-- Remove field hobby from contact
+--
+CREATE TABLE "new__contact_contact" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL, "bidang_id" bigint NOT NULL REFERENCES "contact_bidang" ("id") DEFERRABLE INITIALLY DEFERRED, "country_id" bigint NOT NULL REFERENCES "contact_country" ("id") DEFERRABLE INITIALLY DEFERRED, "gender_id" bigint NOT NULL REFERENCES "contact_gender" ("id") DEFERRABLE INITIALLY DEFERRED, "group_id" bigint NOT NULL REFERENCES "contact_group" ("id") DEFERRABLE INITIALLY DEFERRED, "is_important_id" bigint NOT NULL REFERENCES "contact_isimportant" ("id") DEFERRABLE INITIALLY DEFERRED, "perwakin_id" bigint NOT NULL REFERENCES "contact_perwakin" ("id") DEFERRABLE INITIALLY DEFERRED, "profession_id" bigint NOT NULL REFERENCES "contact_profession" ("id") DEFERRABLE INITIALLY DEFERRED, "region_id" bigint NOT NULL REFERENCES "contact_region" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "new__contact_contact" ("id", "name", "created_at", "updated_at", "bidang_id", "country_id", "gender_id", "group_id", "is_important_id", "perwakin_id", "profession_id", "region_id") SELECT "id", "name", "created_at", "updated_at", "bidang_id", "country_id", "gender_id", "group_id", "is_important_id", "perwakin_id", "profession_id", "region_id" FROM "contact_contact";
+DROP TABLE "contact_contact";
+ALTER TABLE "new__contact_contact" RENAME TO "contact_contact";
+CREATE INDEX "contact_contact_bidang_id_d680a221" ON "contact_contact" ("bidang_id");
+CREATE INDEX "contact_contact_country_id_8c4af7e6" ON "contact_contact" ("country_id");
+CREATE INDEX "contact_contact_gender_id_878b72bf" ON "contact_contact" ("gender_id");
+CREATE INDEX "contact_contact_group_id_ac91452d" ON "contact_contact" ("group_id");
+CREATE INDEX "contact_contact_is_important_id_4f0885f7" ON "contact_contact" ("is_important_id");
+CREATE INDEX "contact_contact_perwakin_id_16332b0d" ON "contact_contact" ("perwakin_id");
+CREATE INDEX "contact_contact_profession_id_0cd93d60" ON "contact_contact" ("profession_id");
+CREATE INDEX "contact_contact_region_id_c4c62694" ON "contact_contact" ("region_id");
+--
+-- Add field hobby to contact
+--
+CREATE TABLE "contact_contact_hobby" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "contact_id" bigint NOT NULL REFERENCES "contact_contact" ("id") DEFERRABLE INITIALLY DEFERRED, "hobby_id" bigint NOT NULL REFERENCES "contact_hobby" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE UNIQUE INDEX "contact_contact_hobby_contact_id_hobby_id_faec200e_uniq" ON "contact_contact_hobby" ("contact_id", "hobby_id");
+CREATE INDEX "contact_contact_hobby_contact_id_7227203e" ON "contact_contact_hobby" ("contact_id");
+CREATE INDEX "contact_contact_hobby_hobby_id_d5518a52" ON "contact_contact_hobby" ("hobby_id");
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0009
+BEGIN;
+--
+-- Remove field profession from contact
+--
+CREATE TABLE "new__contact_contact" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL, "bidang_id" bigint NOT NULL REFERENCES "contact_bidang" ("id") DEFERRABLE INITIALLY DEFERRED, "country_id" bigint NOT NULL REFERENCES "contact_country" ("id") DEFERRABLE INITIALLY DEFERRED, "gender_id" bigint NOT NULL REFERENCES "contact_gender" ("id") DEFERRABLE INITIALLY DEFERRED, "group_id" bigint NOT NULL REFERENCES "contact_group" ("id") DEFERRABLE INITIALLY DEFERRED, "is_important_id" bigint NOT NULL REFERENCES "contact_isimportant" ("id") DEFERRABLE INITIALLY DEFERRED, "perwakin_id" bigint NOT NULL REFERENCES "contact_perwakin" ("id") DEFERRABLE INITIALLY DEFERRED, "region_id" bigint NOT NULL REFERENCES "contact_region" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "new__contact_contact" ("id", "name", "created_at", "updated_at", "bidang_id", "country_id", "gender_id", "group_id", "is_important_id", "perwakin_id", "region_id") SELECT "id", "name", "created_at", "updated_at", "bidang_id", "country_id", "gender_id", "group_id", "is_important_id", "perwakin_id", "region_id" FROM "contact_contact";
+DROP TABLE "contact_contact";
+ALTER TABLE "new__contact_contact" RENAME TO "contact_contact";
+CREATE INDEX "contact_contact_bidang_id_d680a221" ON "contact_contact" ("bidang_id");
+CREATE INDEX "contact_contact_country_id_8c4af7e6" ON "contact_contact" ("country_id");
+CREATE INDEX "contact_contact_gender_id_878b72bf" ON "contact_contact" ("gender_id");
+CREATE INDEX "contact_contact_group_id_ac91452d" ON "contact_contact" ("group_id");
+CREATE INDEX "contact_contact_is_important_id_4f0885f7" ON "contact_contact" ("is_important_id");
+CREATE INDEX "contact_contact_perwakin_id_16332b0d" ON "contact_contact" ("perwakin_id");
+CREATE INDEX "contact_contact_region_id_c4c62694" ON "contact_contact" ("region_id");
+--
+-- Add field profession to contact
+--
+CREATE TABLE "contact_contact_profession" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "contact_id" bigint NOT NULL REFERENCES "contact_contact" ("id") DEFERRABLE INITIALLY DEFERRED, "profession_id" bigint NOT NULL REFERENCES "contact_profession" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE UNIQUE INDEX "contact_contact_profession_contact_id_profession_id_b6cfdbda_uniq" ON "contact_contact_profession" ("contact_id", "profession_id");
+CREATE INDEX "contact_contact_profession_contact_id_c2416c6d" ON "contact_contact_profession" ("contact_id");
+CREATE INDEX "contact_contact_profession_profession_id_fe0349de" ON "contact_contact_profession" ("profession_id");
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0010
+BEGIN;
+--
+-- Create model Interest
+--
+CREATE TABLE "contact_interest" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL);
+--
+-- Add field interest to contact
+--
+CREATE TABLE "contact_contact_interest" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "contact_id" bigint NOT NULL REFERENCES "contact_contact" ("id") DEFERRABLE INITIALLY DEFERRED, "interest_id" bigint NOT NULL REFERENCES "contact_interest" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE UNIQUE INDEX "contact_contact_interest_contact_id_interest_id_68edff3e_uniq" ON "contact_contact_interest" ("contact_id", "interest_id");
+CREATE INDEX "contact_contact_interest_contact_id_d56576dc" ON "contact_contact_interest" ("contact_id");
+CREATE INDEX "contact_contact_interest_interest_id_1fdaea4b" ON "contact_contact_interest" ("interest_id");
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0011
+BEGIN;
+--
+-- Create model Salutation
+--
+CREATE TABLE "contact_salutation" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL);
+--
+-- Add field salutation to contact
+--
+CREATE TABLE "new__contact_contact" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL, "bidang_id" bigint NOT NULL REFERENCES "contact_bidang" ("id") DEFERRABLE INITIALLY DEFERRED, "country_id" bigint NOT NULL REFERENCES "contact_country" ("id") DEFERRABLE INITIALLY DEFERRED, "gender_id" bigint NOT NULL REFERENCES "contact_gender" ("id") DEFERRABLE INITIALLY DEFERRED, "group_id" bigint NOT NULL REFERENCES "contact_group" ("id") DEFERRABLE INITIALLY DEFERRED, "is_important_id" bigint NOT NULL REFERENCES "contact_isimportant" ("id") DEFERRABLE INITIALLY DEFERRED, "perwakin_id" bigint NOT NULL REFERENCES "contact_perwakin" ("id") DEFERRABLE INITIALLY DEFERRED, "region_id" bigint NOT NULL REFERENCES "contact_region" ("id") DEFERRABLE INITIALLY DEFERRED, "salutation_id" bigint NOT NULL REFERENCES "contact_salutation" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "new__contact_contact" ("id", "name", "created_at", "updated_at", "bidang_id", "country_id", "gender_id", "group_id", "is_important_id", "perwakin_id", "region_id", "salutation_id") SELECT "id", "name", "created_at", "updated_at", "bidang_id", "country_id", "gender_id", "group_id", "is_important_id", "perwakin_id", "region_id", 1 FROM "contact_contact";
+DROP TABLE "contact_contact";
+ALTER TABLE "new__contact_contact" RENAME TO "contact_contact";
+CREATE INDEX "contact_contact_bidang_id_d680a221" ON "contact_contact" ("bidang_id");
+CREATE INDEX "contact_contact_country_id_8c4af7e6" ON "contact_contact" ("country_id");
+CREATE INDEX "contact_contact_gender_id_878b72bf" ON "contact_contact" ("gender_id");
+CREATE INDEX "contact_contact_group_id_ac91452d" ON "contact_contact" ("group_id");
+CREATE INDEX "contact_contact_is_important_id_4f0885f7" ON "contact_contact" ("is_important_id");
+CREATE INDEX "contact_contact_perwakin_id_16332b0d" ON "contact_contact" ("perwakin_id");
+CREATE INDEX "contact_contact_region_id_c4c62694" ON "contact_contact" ("region_id");
+CREATE INDEX "contact_contact_salutation_id_9a80565d" ON "contact_contact" ("salutation_id");
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ python manage.py sqlmigrate contact 0012
+BEGIN;
+--
+-- Remove field group from contact
+--
+CREATE TABLE "new__contact_contact" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(30) NOT NULL, "created_at" date NOT NULL, "updated_at" date NOT NULL, "bidang_id" bigint NOT NULL REFERENCES "contact_bidang" ("id") DEFERRABLE INITIALLY DEFERRED, "country_id" bigint NOT NULL REFERENCES "contact_country" ("id") DEFERRABLE INITIALLY DEFERRED, "gender_id" bigint NOT NULL REFERENCES "contact_gender" ("id") DEFERRABLE INITIALLY DEFERRED, "is_important_id" bigint NOT NULL REFERENCES "contact_isimportant" ("id") DEFERRABLE INITIALLY DEFERRED, "perwakin_id" bigint NOT NULL REFERENCES "contact_perwakin" ("id") DEFERRABLE INITIALLY DEFERRED, "region_id" bigint NOT NULL REFERENCES "contact_region" ("id") DEFERRABLE INITIALLY DEFERRED, "salutation_id" bigint NOT NULL REFERENCES "contact_salutation" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "new__contact_contact" ("id", "name", "created_at", "updated_at", "bidang_id", "country_id", "gender_id", "is_important_id", "perwakin_id", "region_id", "salutation_id") SELECT "id", "name", "created_at", "updated_at", "bidang_id", "country_id", "gender_id", "is_important_id", "perwakin_id", "region_id", "salutation_id" FROM "contact_contact";
+DROP TABLE "contact_contact";
+ALTER TABLE "new__contact_contact" RENAME TO "contact_contact";
+CREATE INDEX "contact_contact_bidang_id_d680a221" ON "contact_contact" ("bidang_id");
+CREATE INDEX "contact_contact_country_id_8c4af7e6" ON "contact_contact" ("country_id");
+CREATE INDEX "contact_contact_gender_id_878b72bf" ON "contact_contact" ("gender_id");
+CREATE INDEX "contact_contact_is_important_id_4f0885f7" ON "contact_contact" ("is_important_id");
+CREATE INDEX "contact_contact_perwakin_id_16332b0d" ON "contact_contact" ("perwakin_id");
+CREATE INDEX "contact_contact_region_id_c4c62694" ON "contact_contact" ("region_id");
+CREATE INDEX "contact_contact_salutation_id_9a80565d" ON "contact_contact" ("salutation_id");
+--
+-- Add field group to contact
+--
+CREATE TABLE "contact_contact_group" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "contact_id" bigint NOT NULL REFERENCES "contact_contact" ("id") DEFERRABLE INITIALLY DEFERRED, "group_id" bigint NOT NULL REFERENCES "contact_group" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE UNIQUE INDEX "contact_contact_group_contact_id_group_id_6aaf1816_uniq" ON "contact_contact_group" ("contact_id", "group_id");
+CREATE INDEX "contact_contact_group_contact_id_6c172a29" ON "contact_contact_group" ("contact_id");
+CREATE INDEX "contact_contact_group_group_id_d9c3d45e" ON "contact_contact_group" ("group_id");
+COMMIT;
+
+E:\_WORKSPACE\2024\django\contact-perwakin\2024-contact-perwakin(main -> origin)
+(venv31042) λ
