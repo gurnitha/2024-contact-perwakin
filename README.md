@@ -29,3 +29,11 @@ Membuat contact manager
         new file:   contact/migrations/0001_initial.py
         new file:   contact/migrations/0002_country.py
         modified:   contact/models.py
+
+
+#### 3. Create City model and added OneToMany relationship with Country and Region
+
+        modified:   README.md
+        modified:   contact/admin.py
+        new file:   contact/migrations/0003_alter_country_options_city.py
+        modified:   contact/models.py

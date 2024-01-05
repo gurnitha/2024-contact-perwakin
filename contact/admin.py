@@ -1,9 +1,10 @@
 from django.contrib import admin
 
 
-from .models import Region, Country
+from .models import Region, Country, City
 
 # Register your models here.
 
 admin.site.register(Region)
 admin.site.register(Country)
+admin.site.register(City)
