@@ -20,3 +20,12 @@ Membuat contact manager
         new file:   contact/views.py
         new file:   manage.py
         new file:   note.txt
+
+
+#### 2. Create Region and Country models with OneToMany relationship
+
+        modified:   README.md
+        modified:   contact/admin.py
+        new file:   contact/migrations/0001_initial.py
+        new file:   contact/migrations/0002_country.py
+        modified:   contact/models.py
